@@ -16,10 +16,10 @@ function ModalComponant({
   rewardData,
   setModalVisible,
   isDone,
-  customIndex,
+  // customIndex,
 }) {
   console.log("iS DOne ", isDone);
-  console.log(customIndex);
+  // console.log(customIndex);
 
   // let Cusvisible = false;
 

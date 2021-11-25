@@ -9,6 +9,7 @@ import {
   Button,
 } from "react-native";
 import ModalComponent from "./components/ModalComponent";
+import RenderFlatList from "./components/RenderFlatList";
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -30,7 +31,7 @@ export default function App() {
   // const [data, setData] = useState();
   const [batches, setBatches] = useState([]);
   const [reward, setReward] = useState();
-  const [batchesLength, setBatchLength] = useState();
+  const [batchesLength, setBatchLength] = useState(0);
   const [blocks, setBlocks] = useState([]);
   const [bool, setBool] = useState(false);
   const [customIndex, setCustomIndex] = useState(-1);
@@ -41,9 +42,26 @@ export default function App() {
     callApi();
   }, []);
 
+  useEffect(() => {
+    let arr = [];
+
+    for (let i = 0; i < batchesLength; i++) {
+      // setBlocks([...blocks, ...batches[i]?.blocks]);
+      const temp = [...batches[i]?.blocks];
+      arr = [...arr, ...temp];
+    }
+
+    setBlocks(arr);
+  }, [bool]);
+
+  useEffect(() => {
+    setBatchLength(batches.length);
+  }, [batches]);
+
   // useEffect(() => {
-  //
-  // }, [bool]);
+  //   // setBatchLength(batches.length);
+  //   setBatches(reward.batches);
+  // }, [reward]);
 
   const callApi = async () => {
     try {
@@ -62,57 +80,56 @@ export default function App() {
       setReward(res.data.rewardList);
       setBatches(res.data.rewardList[0]?.batches);
 
-      setBatchLength(batches.length);
-
-      setBlocks(batches[0]?.blocks);
+      // setBlocks(batches[0]?.blocks);
 
       // console.log(batches[0].blocks);
 
       // console.log("reward", reward);
       // console.log("Batch", batches);
       // console.log("batch-length", batchesLength);
-      // console.log("blocks", blocks);
+      console.log("blocks", blocks);
 
+      setBool(true);
       // console.log("call api call thai");
     } catch (e) {
       console.log(e);
     }
   };
 
-  const renderHorizontalFlatList = (data, index) => {
-    // console.log("data", data);
-    console.log(index);
-    return (
-      <View style={styles.horizontalFlatListView}>
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => {
-            setModalVisible(!modalVisible);
-            setValue(data?.category);
-            setCustomIndex(index);
-          }}
-        >
-          <Text style={styles.horizontalFlatListText}>{data.category}</Text>
-        </TouchableOpacity>
+  // const renderHorizontalFlatList = (data, index) => {
+  //   // console.log("data", data);
+  //   console.log(index);
+  //   return (
+  //     <View style={styles.horizontalFlatListView}>
+  //       <TouchableOpacity
+  //         style={styles.btn}
+  //         onPress={() => {
+  //           setModalVisible(!modalVisible);
+  //           setValue(data?.category);
+  //           setCustomIndex(index);
+  //         }}
+  //       >
+  //         <Text style={styles.horizontalFlatListText}>{data.category}</Text>
+  //       </TouchableOpacity>
 
-        <ModalComponent
-          modleVisible={modalVisible}
-          rewardData={value}
-          isDone={data.isDone}
-          setModalVisible={setModalVisible}
-          customIndex={customIndex}
-        />
-      </View>
-    );
-  };
+  //       <ModalComponent
+  //         modleVisible={modalVisible}
+  //         rewardData={value}
+  //         isDone={data.isDone}
+  //         setModalVisible={setModalVisible}
+  //         // customIndex={customIndex}
+  //       />
+  //     </View>
+  //   );
+  // };
 
   return (
     <View style={styles.container}>
       <FlatList
         data={blocks}
-        renderItem={({ item: data, index }) =>
-          renderHorizontalFlatList(data, index)
-        }
+        renderItem={({ item: data, index }) => (
+          <RenderFlatList data={data} index={index} />
+        )}
         horizontal={true}
         style={styles.horizontalFlatList}
       />
