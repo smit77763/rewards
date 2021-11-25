@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import {
   View,
@@ -11,7 +11,22 @@ import {
 
 // import FormContact from "./FormContact";
 
-function ModalComponant({ modleVisible, rewardData, setModalVisible }) {
+function ModalComponant({
+  modleVisible,
+  rewardData,
+  setModalVisible,
+  isDone,
+  customIndex,
+}) {
+  console.log("iS DOne ", isDone);
+  console.log(customIndex);
+
+  // let Cusvisible = false;
+
+  // if (index === customIndex) {
+  //   Cusvisible = true;
+  // }
+
   return (
     <Modal
       animationType="slide"
@@ -25,7 +40,17 @@ function ModalComponant({ modleVisible, rewardData, setModalVisible }) {
           style={styles.modalHide}
         >
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>This is {rewardData} contest</Text>
+            <Text style={styles.modalText}>
+              {isDone
+                ? `you have completed ${rewardData}`
+                : `you have to finish ${rewardData}`}
+            </Text>
+
+            {/* {
+              if(isDone) {
+                re
+              }
+            } */}
             {/* <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modleVisible)}
@@ -59,7 +84,6 @@ const styles = StyleSheet.create({
     // marginTop: 22,
   },
   modalView: {
-    
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -93,7 +117,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-    padding: 30
+    padding: 30,
   },
   modalHide: {
     flex: 1,

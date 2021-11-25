@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
-  ScrollView,
   View,
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import ModalComponent from "./components/ModalComponent";
 
@@ -27,25 +27,80 @@ export default function App() {
     { title: "10" },
   ];
 
-  const renderHorizontalFlatList = (data) => {
+  // const [data, setData] = useState();
+  const [batches, setBatches] = useState([]);
+  const [reward, setReward] = useState();
+  const [batchesLength, setBatchLength] = useState();
+  const [blocks, setBlocks] = useState([]);
+  const [bool, setBool] = useState(false);
+  const [customIndex, setCustomIndex] = useState(-1);
+
+  let res;
+
+  useEffect(() => {
+    callApi();
+  }, []);
+
+  // useEffect(() => {
+  //
+  // }, [bool]);
+
+  const callApi = async () => {
+    try {
+      const response = await fetch(
+        "https://reward-backend.herokuapp.com/api/rewardApp/1"
+      );
+
+      // console.warn(response.json());
+      res = await response.json();
+      // const finalRes = JSON.stringify(res);
+      // console.log(JSON.stringify(res));
+      // console.log(res.data.length);
+
+      // setBool(!bool);
+
+      setReward(res.data.rewardList);
+      setBatches(res.data.rewardList[0]?.batches);
+
+      setBatchLength(batches.length);
+
+      setBlocks(batches[0]?.blocks);
+
+      // console.log(batches[0].blocks);
+
+      // console.log("reward", reward);
+      // console.log("Batch", batches);
+      // console.log("batch-length", batchesLength);
+      // console.log("blocks", blocks);
+
+      // console.log("call api call thai");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const renderHorizontalFlatList = (data, index) => {
+    // console.log("data", data);
+    console.log(index);
     return (
       <View style={styles.horizontalFlatListView}>
         <TouchableOpacity
           style={styles.btn}
           onPress={() => {
             setModalVisible(!modalVisible);
-            setValue(data.title);
+            setValue(data?.category);
+            setCustomIndex(index);
           }}
         >
-          <Text style={styles.horizontalFlatListText}>{data.title}</Text>
+          <Text style={styles.horizontalFlatListText}>{data.category}</Text>
         </TouchableOpacity>
 
         <ModalComponent
-        modleVisible={modalVisible}
-        rewardData={value}
-        setModalVisible={setModalVisible}
-
-
+          modleVisible={modalVisible}
+          rewardData={value}
+          isDone={data.isDone}
+          setModalVisible={setModalVisible}
+          customIndex={customIndex}
         />
       </View>
     );
@@ -54,8 +109,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={DATA}
-        renderItem={({ item: data }) => renderHorizontalFlatList(data)}
+        data={blocks}
+        renderItem={({ item: data, index }) =>
+          renderHorizontalFlatList(data, index)
+        }
         horizontal={true}
         style={styles.horizontalFlatList}
       />
