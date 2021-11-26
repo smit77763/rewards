@@ -35,6 +35,7 @@ export default function App() {
   const [blocks, setBlocks] = useState([]);
   const [bool, setBool] = useState(false);
   const [customIndex, setCustomIndex] = useState(-1);
+  const [sortedArray, setSortedArray] = useState([]);
 
   let res;
 
@@ -45,6 +46,7 @@ export default function App() {
   useEffect(() => {
     let arr = [];
 
+    //merging all blocks element in an array
     for (let i = 0; i < batchesLength; i++) {
       // setBlocks([...blocks, ...batches[i]?.blocks]);
       const temp = [...batches[i]?.blocks];
@@ -58,75 +60,66 @@ export default function App() {
     setBatchLength(batches.length);
   }, [batches]);
 
-  // useEffect(() => {
-  //   // setBatchLength(batches.length);
-  //   setBatches(reward.batches);
-  // }, [reward]);
-
   const callApi = async () => {
     try {
       const response = await fetch(
         "https://reward-backend.herokuapp.com/api/rewardApp/1"
       );
 
-      // console.warn(response.json());
       res = await response.json();
-      // const finalRes = JSON.stringify(res);
-      // console.log(JSON.stringify(res));
-      // console.log(res.data.length);
 
-      // setBool(!bool);
+      // No.of batches
+      const lengthOfBacthes = res.data.rewardList[0].lenOfBatches;
+      // it referes to batches array
+      const blockArray = res.data.rewardList[0].batches;
+
+      // creating a new Array to store a element in the way that has been executed
+      const sortedArray = [];
+
+      for (let i = 0; i <= lengthOfBacthes; i++) {
+        //no. of blocks in ith batches
+        let blockLength = res.data.rewardList[0].track[i].blockNumber.length;
+        //it referes to ith sorted block.
+        let sortBlockArray = res.data.rewardList[0].track[i].blockNumber;
+
+        for (let j = 0; j < blockLength; j++) {
+          sortedArray.push(blockArray[i].blocks[sortBlockArray[j]]);
+        }
+      }
+
+      let blockLength =
+        res.data.rewardList[0].track[lengthOfBacthes].blockNumber.length;
+      let findArray = res.data.rewardList[0].track[lengthOfBacthes].blockNumber;
+      const lastBatchArray = blockArray[lengthOfBacthes].blocks;
+
+      if (blockLength < 4) {
+        let leftBlocksIndex = 0;
+
+        while (leftBlocksIndex != 4) {
+          const isExist = findArray.indexOf(leftBlocksIndex);
+          if (isExist === -1) sortedArray.push(lastBatchArray[leftBlocksIndex]);
+          leftBlocksIndex++;
+        }
+      }
+
+      //update the state
+      setSortedArray(sortedArray);
+
+      // console.log("sortedArray", sortedArray);
 
       setReward(res.data.rewardList);
       setBatches(res.data.rewardList[0]?.batches);
 
-      // setBlocks(batches[0]?.blocks);
-
-      // console.log(batches[0].blocks);
-
-      // console.log("reward", reward);
-      // console.log("Batch", batches);
-      // console.log("batch-length", batchesLength);
-      console.log("blocks", blocks);
-
       setBool(true);
-      // console.log("call api call thai");
     } catch (e) {
       console.log(e);
     }
   };
 
-  // const renderHorizontalFlatList = (data, index) => {
-  //   // console.log("data", data);
-  //   console.log(index);
-  //   return (
-  //     <View style={styles.horizontalFlatListView}>
-  //       <TouchableOpacity
-  //         style={styles.btn}
-  //         onPress={() => {
-  //           setModalVisible(!modalVisible);
-  //           setValue(data?.category);
-  //           setCustomIndex(index);
-  //         }}
-  //       >
-  //         <Text style={styles.horizontalFlatListText}>{data.category}</Text>
-  //       </TouchableOpacity>
-
-  //       <ModalComponent
-  //         modleVisible={modalVisible}
-  //         rewardData={value}
-  //         isDone={data.isDone}
-  //         setModalVisible={setModalVisible}
-  //         // customIndex={customIndex}
-  //       />
-  //     </View>
-  //   );
-  // };
-
   return (
     <View style={styles.container}>
       <FlatList
-        data={blocks}
+        data={sortedArray}
         renderItem={({ item: data, index }) => (
           <RenderFlatList data={data} index={index} />
         )}
