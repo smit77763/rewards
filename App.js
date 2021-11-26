@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
-  ScrollView,
   View,
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import ModalComponent from "./components/ModalComponent";
+import RenderFlatList from "./components/RenderFlatList";
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,35 +28,101 @@ export default function App() {
     { title: "10" },
   ];
 
-  const renderHorizontalFlatList = (data) => {
-    return (
-      <View style={styles.horizontalFlatListView}>
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => {
-            setModalVisible(!modalVisible);
-            setValue(data.title);
-          }}
-        >
-          <Text style={styles.horizontalFlatListText}>{data.title}</Text>
-        </TouchableOpacity>
+  // const [data, setData] = useState();
+  const [batches, setBatches] = useState([]);
+  const [reward, setReward] = useState();
+  const [batchesLength, setBatchLength] = useState(0);
+  const [blocks, setBlocks] = useState([]);
+  const [bool, setBool] = useState(false);
+  const [customIndex, setCustomIndex] = useState(-1);
+  const [sortedArray, setSortedArray] = useState([]);
 
-        <ModalComponent
-        modleVisible={modalVisible}
-        rewardData={value}
-        setModalVisible={setModalVisible}
+  let res;
 
+  useEffect(() => {
+    callApi();
+  }, []);
 
-        />
-      </View>
-    );
+  useEffect(() => {
+    let arr = [];
+
+    //merging all blocks element in an array
+    for (let i = 0; i < batchesLength; i++) {
+      // setBlocks([...blocks, ...batches[i]?.blocks]);
+      const temp = [...batches[i]?.blocks];
+      arr = [...arr, ...temp];
+    }
+
+    setBlocks(arr);
+  }, [bool]);
+
+  useEffect(() => {
+    setBatchLength(batches.length);
+  }, [batches]);
+
+  const callApi = async () => {
+    try {
+      const response = await fetch(
+        "https://reward-backend.herokuapp.com/api/rewardApp/1"
+      );
+
+      res = await response.json();
+
+      // No.of batches
+      const lengthOfBacthes = res.data.rewardList[0].lenOfBatches;
+      // it referes to batches array
+      const blockArray = res.data.rewardList[0].batches;
+
+      // creating a new Array to store a element in the way that has been executed
+      const sortedArray = [];
+
+      for (let i = 0; i <= lengthOfBacthes; i++) {
+        //no. of blocks in ith batches
+        let blockLength = res.data.rewardList[0].track[i].blockNumber.length;
+        //it referes to ith sorted block.
+        let sortBlockArray = res.data.rewardList[0].track[i].blockNumber;
+
+        for (let j = 0; j < blockLength; j++) {
+          sortedArray.push(blockArray[i].blocks[sortBlockArray[j]]);
+        }
+      }
+
+      let blockLength =
+        res.data.rewardList[0].track[lengthOfBacthes].blockNumber.length;
+      let findArray = res.data.rewardList[0].track[lengthOfBacthes].blockNumber;
+      const lastBatchArray = blockArray[lengthOfBacthes].blocks;
+
+      if (blockLength < 4) {
+        let leftBlocksIndex = 0;
+
+        while (leftBlocksIndex != 4) {
+          const isExist = findArray.indexOf(leftBlocksIndex);
+          if (isExist === -1) sortedArray.push(lastBatchArray[leftBlocksIndex]);
+          leftBlocksIndex++;
+        }
+      }
+
+      //update the state
+      setSortedArray(sortedArray);
+
+      // console.log("sortedArray", sortedArray);
+
+      setReward(res.data.rewardList);
+      setBatches(res.data.rewardList[0]?.batches);
+
+      setBool(true);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={DATA}
-        renderItem={({ item: data }) => renderHorizontalFlatList(data)}
+        data={sortedArray}
+        renderItem={({ item: data, index }) => (
+          <RenderFlatList data={data} index={index} />
+        )}
         horizontal={true}
         style={styles.horizontalFlatList}
       />
