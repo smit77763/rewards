@@ -30,6 +30,7 @@ const RenderFlatList = ({ data, index }) => {
       </TouchableOpacity>
 
       <ModalComponant
+        data={data}
         modleVisible={modalVisible}
         rewardData={value}
         isDone={data.isDone}

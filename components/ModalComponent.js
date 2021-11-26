@@ -8,6 +8,7 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
+import moment from "moment";
 
 // import FormContact from "./FormContact";
 
@@ -16,17 +17,9 @@ function ModalComponant({
   rewardData,
   setModalVisible,
   isDone,
-  // customIndex,
+  data,
 }) {
-  console.log("iS DOne ", isDone);
-  // console.log(customIndex);
-
-  // let Cusvisible = false;
-
-  // if (index === customIndex) {
-  //   Cusvisible = true;
-  // }
-
+  const date = moment(data.date).format("MMMM Do YYYY, h:mm A");
   return (
     <Modal
       animationType="slide"
@@ -45,18 +38,11 @@ function ModalComponant({
                 ? `you have completed ${rewardData}`
                 : `you have to finish ${rewardData}`}
             </Text>
-
-            {/* {
-              if(isDone) {
-                re
-              }
-            } */}
-            {/* <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modleVisible)}
-            >
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable> */}
+            <Text style={styles.modalText}>Category : {data.category}</Text>
+            <Text style={styles.modalText}>
+              Fees : {data.free ? "free" : data.fees}
+            </Text>
+            {isDone && <Text style={styles.modalText}>Date : {date}</Text>}
           </View>
         </TouchableOpacity>
       </View>
@@ -80,11 +66,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
     // marginTop: 22,
   },
   modalView: {
-    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -96,6 +81,7 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.25,
     // shadowRadius: 4,
     elevation: 1,
+    backgroundColor: "#101010",
     // borderWidth: 2,
   },
   button: {
@@ -115,9 +101,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginBottom: 5,
     textAlign: "center",
-    padding: 30,
+    color: "white",
   },
   modalHide: {
     flex: 1,
