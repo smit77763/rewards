@@ -3,17 +3,24 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   FlatList,
   TouchableOpacity,
+  Modal,
+  Dimensions,
   Button,
+  ScrollView,
 } from "react-native";
 import ModalComponent from "./components/ModalComponent";
 import RenderFlatList from "./components/RenderFlatList";
+import RenderVerticalFlatList from "./components/RenderVerticalFlatlist";
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState("");
+  // cons
 
   const DATA = [
     { title: "1" },
@@ -36,7 +43,7 @@ export default function App() {
   const [bool, setBool] = useState(false);
   const [customIndex, setCustomIndex] = useState(-1);
   const [sortedArray, setSortedArray] = useState([]);
-
+  const [rewardArray, setRewardArray] = useState([]);
   let res;
 
   useEffect(() => {
@@ -63,7 +70,7 @@ export default function App() {
   const callApi = async () => {
     try {
       const response = await fetch(
-        "https://reward-backend.herokuapp.com/api/rewardApp/1"
+        "https://reward-backend.herokuapp.com/api/rewardApp/10"
       );
 
       res = await response.json();
@@ -102,10 +109,12 @@ export default function App() {
         }
       }
 
+      setRewardArray([...res.data.rewardList[0].rewardData])
+
       //update the state
       setSortedArray(sortedArray);
 
-      // console.log("sortedArray", sortedArray);
+    
 
       setReward(res.data.rewardList);
       setBatches(res.data.rewardList[0]?.batches);
@@ -117,40 +126,98 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={sortedArray}
-        renderItem={({ item: data, index }) => (
-          <RenderFlatList data={data} index={index} />
-        )}
-        horizontal={true}
-        style={styles.horizontalFlatList}
-      />
-    </View>
+    <ScrollView style={styles.container}>
+      <View>
+        <FlatList
+          data={sortedArray}
+          renderItem={({ item: data, index }) => (
+            <RenderFlatList data={data} index={index} />
+          )}
+          // keyExtractor={data.tostring}
+          horizontal={true}
+          style={styles.horizontalFlatList}
+        />
+      </View>
+
+      <View style={styles.verticalFlatlistView}>
+        <FlatList
+          data={rewardArray}
+          renderItem={({ item: data, index }) => (
+            <RenderVerticalFlatList data={data} index={index} />
+            
+          )}
+          numColumns={2}
+          style={styles.verticalFlatList}
+        />
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    
+    height: windowHeight,
+    backgroundColor: "#171717",
   },
   horizontalFlatList: {
     marginTop: 100,
-    // borderWidth: 1,
-    height: 560,
+    height: windowWidth * 0.2,
   },
-  btn: {
-    backgroundColor: "#FF5733",
-    borderRadius: 8,
-    padding: 15,
+ 
+  verticalFlatList: {
+    // alignSelf: "center",
+    // height: windowHeight * 0.9
   },
-  horizontalFlatListText: {
-    color: "black",
+ 
+  verticalFlatListText: {},
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    // marginTop: 22,
+  },
+  modalView: {
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    // shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    elevation: 1,
+    backgroundColor: "#101010",
+    // borderWidth: 2,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
     fontWeight: "bold",
-    fontSize: 15,
+    textAlign: "center",
   },
-  horizontalFlatListView: {
-    marginRight: 10,
-    marginLeft: 10,
+  modalText: {
+    marginBottom: 5,
+    textAlign: "center",
+    color: "white",
+  },
+  modalHide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
 });

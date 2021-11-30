@@ -50,12 +50,12 @@ const styles = StyleSheet.create({
     height: 560,
   },
   btn: {
-    backgroundColor: "#FF5733",
+    backgroundColor: "#DA0037",
     borderRadius: 8,
     padding: 15,
   },
   horizontalFlatListText: {
-    color: "black",
+    color: "white",
     fontWeight: "bold",
     fontSize: 15,
   },
