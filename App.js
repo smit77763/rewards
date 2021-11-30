@@ -3,17 +3,23 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   FlatList,
   TouchableOpacity,
+  Modal,
+  Dimensions,
   Button,
 } from "react-native";
 import ModalComponent from "./components/ModalComponent";
 import RenderFlatList from "./components/RenderFlatList";
+import RenderVerticalFlatList from "./components/RenderVerticalFlatlist";
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState("");
+  // cons
 
   const DATA = [
     { title: "1" },
@@ -126,6 +132,16 @@ export default function App() {
         horizontal={true}
         style={styles.horizontalFlatList}
       />
+
+      <FlatList
+        data={sortedArray}
+        renderItem={({ item: data, index }) => (
+          <RenderVerticalFlatList data={data} index={index} />
+          //  <RenderFlatList data={data} index={index} />;
+        )}
+        numColumns={2}
+        style={styles.verticalFlatList}
+      />
     </View>
   );
 }
@@ -136,8 +152,9 @@ const styles = StyleSheet.create({
   },
   horizontalFlatList: {
     marginTop: 100,
+
     // borderWidth: 1,
-    height: 560,
+    height: windowWidth * 0.4,
   },
   btn: {
     backgroundColor: "#FF5733",
@@ -152,5 +169,69 @@ const styles = StyleSheet.create({
   horizontalFlatListView: {
     marginRight: 10,
     marginLeft: 10,
+  },
+  verticalFlatList: {
+    alignSelf: "center",
+  },
+  verticalFlatListView: {
+    width: (windowWidth / 2) * 0.9,
+    height: (windowWidth / 2) * 0.9,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    backgroundColor: "yellow",
+    marginHorizontal: 5,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  verticalFlatListText: {},
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    // marginTop: 22,
+  },
+  modalView: {
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    // shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    elevation: 1,
+    backgroundColor: "#101010",
+    // borderWidth: 2,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 5,
+    textAlign: "center",
+    color: "white",
+  },
+  modalHide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
 });
