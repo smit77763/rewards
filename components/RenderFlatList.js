@@ -8,18 +8,36 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
-// import ModalComponent from "./components/ModalComponent";
+
 import ModalComponant from "./ModalComponent";
 
-const RenderFlatList = ({ data, index }) => {
+const RenderFlatList = ({ data, index, batchesLength }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState("");
+  const [btnColor, setBtnColor] = useState("#DA0037");
+  // console.log("batchesLength : ", batchesLength);
 
-  //   console.log(index);
+  // const btColor=function(){
+
+  //   if(data.isDone===true){
+  //     setBtnColor('green');
+  //   }
+  //   return btnColor
+  // }
   return (
     <View style={styles.horizontalFlatListView}>
       <TouchableOpacity
-        style={styles.btn}
+        style={[
+          styles.btn,
+          {
+            backgroundColor:
+              batchesLength * 4 > index
+                ? "blue"
+                : data.isDone
+                ? "green"
+                : "#DA0037",
+          },
+        ]}
         onPress={() => {
           setModalVisible(!modalVisible);
           setValue(data?.category);
@@ -50,9 +68,9 @@ const styles = StyleSheet.create({
     height: 560,
   },
   btn: {
-    backgroundColor: "#DA0037",
     borderRadius: 8,
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
   horizontalFlatListText: {
     color: "white",

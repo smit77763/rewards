@@ -38,7 +38,7 @@ export default function App() {
   // const [data, setData] = useState();
   const [batches, setBatches] = useState([]);
   const [reward, setReward] = useState();
-  const [batchesLength, setBatchLength] = useState(0);
+  const [batchesLength, setBatchesLength] = useState(0);
   const [blocks, setBlocks] = useState([]);
   const [bool, setBool] = useState(false);
   const [customIndex, setCustomIndex] = useState(-1);
@@ -63,9 +63,9 @@ export default function App() {
     setBlocks(arr);
   }, [bool]);
 
-  useEffect(() => {
-    setBatchLength(batches.length);
-  }, [batches]);
+  // useEffect(() => {
+  //   // setBatchesLength(batches.length);
+  // }, [batches]);
 
   const callApi = async () => {
     try {
@@ -74,7 +74,7 @@ export default function App() {
       );
 
       res = await response.json();
-
+        setBatchesLength(res.data.rewardList[0].lenOfBatches);
       // No.of batches
       const lengthOfBacthes = res.data.rewardList[0].lenOfBatches;
       // it referes to batches array
@@ -131,7 +131,7 @@ export default function App() {
         <FlatList
           data={sortedArray}
           renderItem={({ item: data, index }) => (
-            <RenderFlatList data={data} index={index} />
+            <RenderFlatList data={data} index={index} batchesLength ={batchesLength}/>
           )}
           // keyExtractor={data.tostring}
           horizontal={true}
@@ -144,7 +144,6 @@ export default function App() {
           data={rewardArray}
           renderItem={({ item: data, index }) => (
             <RenderVerticalFlatList data={data} index={index} />
-            
           )}
           numColumns={2}
           style={styles.verticalFlatList}
