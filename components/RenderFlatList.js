@@ -15,15 +15,7 @@ const RenderFlatList = ({ data, index, batchesLength }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState("");
   const [btnColor, setBtnColor] = useState("#DA0037");
-  // console.log("batchesLength : ", batchesLength);
 
-  // const btColor=function(){
-
-  //   if(data.isDone===true){
-  //     setBtnColor('green');
-  //   }
-  //   return btnColor
-  // }
   return (
     <View style={styles.horizontalFlatListView}>
       <TouchableOpacity
@@ -32,7 +24,7 @@ const RenderFlatList = ({ data, index, batchesLength }) => {
           {
             backgroundColor:
               batchesLength * 4 > index
-                ? "blue"
+                ? "skyblue"
                 : data.isDone
                 ? "green"
                 : "#DA0037",
