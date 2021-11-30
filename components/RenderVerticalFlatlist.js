@@ -7,11 +7,11 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
-  Modal
-  
+  Modal,
 } from "react-native";
 // import ModalComponent from "./components/ModalComponent";
 import ModalComponant from "./ModalComponent";
+import moment from "moment";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -19,69 +19,62 @@ const windowHeight = Dimensions.get("window").height;
 const RenderVerticalFlatList = ({ data, index }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState("");
-
-  
+  const date = moment(data.rewardDate).format("MMMM Do YYYY, h:mm A");
   return (
-     <TouchableOpacity
-              onPress={() => {
-                setModalVisible(true);
-              }}
+    <TouchableOpacity
+      onPress={() => {
+        setModalVisible(true);
+      }}
+    >
+      <View style={styles.verticalFlatListView}>
+        <Text style={styles.verticalFlatListText}>🏆Reward Earned🏆</Text>
+        <Text style={styles.verticalFlatListText}>
+          {"\n"}₹{data.rewardAmount}
+        </Text>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(!modalVisible)}
+        >
+          <View style={styles.centeredView}>
+            <TouchableOpacity
+              onPress={() => setModalVisible(!modalVisible)}
+              style={styles.modalHide}
             >
-          <View style={styles.verticalFlatListView}>
-            
-           
-              <Text style={styles.verticalFlatListText}>{data.category}</Text>
-           
-           
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => setModalVisible(!modalVisible)}
-            >
-              <View style={styles.centeredView}>
-                <TouchableOpacity
-                  onPress={() => setModalVisible(!modalVisible)}
-                  style={styles.modalHide}
-                >
-                  <View style={styles.modalView}>
-                    <Text style={styles.modalText}>
-                      
-                    </Text>
-                    <Text style={styles.modalText}>
-                      Category : {data.category}
-                    </Text>
-                    <Text style={styles.modalText}>
-                      Congratulations
-                    </Text>
-                   
-                  </View>
-                  {/* </View> */}
-                </TouchableOpacity>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>🏆 Reward of 🏆</Text>
+                <Text style={styles.modalText}>₹ {data.rewardAmount}</Text>
+                <Text style={styles.modalText}>earned on date</Text>
+                <Text style={styles.modalText}>{date}</Text>
               </View>
-            </Modal>
+              {/* </View> */}
+            </TouchableOpacity>
           </View>
-          </TouchableOpacity>
-    
+        </Modal>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  verticalFlatList: {
-    alignSelf: "center",
-  },
   verticalFlatListView: {
     width: (windowWidth / 2) * 0.9,
     height: (windowWidth / 2) * 0.9,
     alignItems: "center",
+    marginLeft: 15,
     justifyContent: "center",
     borderWidth: 2,
-    backgroundColor: "yellow",
+    backgroundColor: "#EDEDED",
     marginHorizontal: 5,
     marginBottom: 10,
     borderRadius: 10,
   },
-  verticalFlatListText: {},
+  verticalFlatListText: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -141,6 +134,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     textAlign: "center",
     color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   modalHide: {
     flex: 1,
