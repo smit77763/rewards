@@ -1,16 +1,6 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import {
-  View,
-  Modal,
-  Text,
-  StyleSheet,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import { View, Modal, Text, StyleSheet, TouchableOpacity } from "react-native";
 import moment from "moment";
-
-// import FormContact from "./FormContact";
 
 function ModalComponant({
   modleVisible,
@@ -35,8 +25,8 @@ function ModalComponant({
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
               {isDone
-                ? `you have completed ${rewardData}`
-                : `you have to finish ${rewardData}`}
+                ? `You Have Completed ${rewardData}`
+                : `You Have To Finish ${rewardData}`}
             </Text>
             <Text style={styles.modalText}>Category : {data.category}</Text>
             <Text style={styles.modalText}>
@@ -51,7 +41,6 @@ function ModalComponant({
 }
 
 const styles = StyleSheet.create({
-  modleCon: {},
   btnClose: {
     backgroundColor: "black",
     borderRadius: 10,
@@ -59,30 +48,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 20,
   },
-  text: {
-    color: "white",
-  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(255, 255, 255, 0.5)",
-    // marginTop: 22,
   },
   modalView: {
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    // shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 0,
     },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 4,
     elevation: 1,
     backgroundColor: "#101010",
-    // borderWidth: 2,
   },
   button: {
     borderRadius: 20,
@@ -102,8 +83,9 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 5,
-    textAlign: "center",
+    textAlign:"left",
     color: "white",
+    fontWeight: "bold",
   },
   modalHide: {
     flex: 1,

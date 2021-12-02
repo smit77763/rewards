@@ -3,10 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  FlatList,
   TouchableOpacity,
-  Button,
 } from "react-native";
 
 import ModalComponant from "./ModalComponent";
@@ -14,7 +11,6 @@ import ModalComponant from "./ModalComponent";
 const RenderFlatList = ({ data, index, batchesLength }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState("");
-  const [btnColor, setBtnColor] = useState("#DA0037");
 
   return (
     <View style={styles.horizontalFlatListView}>
@@ -33,7 +29,6 @@ const RenderFlatList = ({ data, index, batchesLength }) => {
         onPress={() => {
           setModalVisible(!modalVisible);
           setValue(data?.category);
-          //   setCustomIndex(index);
         }}
       >
         <Text style={styles.horizontalFlatListText}>{data.category}</Text>
@@ -51,14 +46,7 @@ const RenderFlatList = ({ data, index, batchesLength }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  horizontalFlatList: {
-    marginTop: 100,
-    // borderWidth: 1,
-    height: 560,
-  },
+
   btn: {
     borderRadius: 8,
     paddingHorizontal: 15,
