@@ -24,6 +24,7 @@ export default function App() {
   const [bool, setBool] = useState(false);
   const [sortedArray, setSortedArray] = useState([]);
   const [rewardArray, setRewardArray] = useState([]);
+  const [batchWiseBlock, setBatchWiseBlock] = useState();
   let res;
 
   useEffect(() => {
@@ -39,6 +40,14 @@ export default function App() {
       arr = [...arr, ...temp];
     }
     setBlocks(arr);
+
+    let temp2 = [];
+    for (let i = 0; i < batchesLength; i++) {
+      const temp3 = [...batches[i]?.blocks];
+      
+      temp2 = [...temp2, temp3];
+    }
+    setBatchWiseBlock(temp2);
   }, [bool]);
 
   const callApi = async () => {
@@ -55,39 +64,44 @@ export default function App() {
       const blockArray = res.data.rewardList[0].batches;
 
       // creating a new Array to store a element in the way that has been executed
-      const sortedArray = [];
+     let sortedSequenceArray = [];
 
-      for (let i = 0; i <= lengthOfBacthes; i++) {
+      for (let i = 0; i <lengthOfBacthes; i++) {
+        
+        let blockSequence=[];
+
         //no. of blocks in ith batches
         let blockLength = res.data.rewardList[0].track[i].blockNumber.length;
         //it referes to ith sorted block.
         let sortBlockArray = res.data.rewardList[0].track[i].blockNumber;
 
         for (let j = 0; j < blockLength; j++) {
-          sortedArray.push(blockArray[i].blocks[sortBlockArray[j]]);
+          blockSequence.push(blockArray[i].blocks[sortBlockArray[j]]);
         }
+        sortedSequenceArray.push(blockSequence);
       }
 
-      let blockLength =
-        res.data.rewardList[0].track[lengthOfBacthes].blockNumber.length;
-      let findArray = res.data.rewardList[0].track[lengthOfBacthes].blockNumber;
-      const lastBatchArray = blockArray[lengthOfBacthes].blocks;
+      // let blockLength =
+      //   res.data.rewardList[0].track[lengthOfBacthes].blockNumber.length;
+      // let findArray = res.data.rewardList[0].track[lengthOfBacthes].blockNumber;
+      // const lastBatchArray = blockArray[lengthOfBacthes].blocks;
 
-      if (blockLength < 4) {
-        let leftBlocksIndex = 0;
+      // if (blockLength < 4) {
+      //   let leftBlocksIndex = 0;
 
-        while (leftBlocksIndex != 4) {
-          const isExist = findArray.indexOf(leftBlocksIndex);
-          if (isExist === -1) sortedArray.push(lastBatchArray[leftBlocksIndex]);
-          leftBlocksIndex++;
-        }
-      }
+      //   while (leftBlocksIndex != 4) {
+      //     const isExist = findArray.indexOf(leftBlocksIndex);
+      //     if (isExist === -1) sortedArray.push(lastBatchArray[leftBlocksIndex]);
+      //     leftBlocksIndex++;
+      //   }
+      // }
 
       setRewardArray([...res.data.rewardList[0].rewardData]);
       //update the state
-      setSortedArray(sortedArray);
+      setSortedArray(sortedSequenceArray);
       setReward(res.data.rewardList);
       setBatches(res.data.rewardList[0]?.batches);
+      // console.log(batches);
 
       setBool(true);
     } catch (e) {
@@ -97,7 +111,7 @@ export default function App() {
 
   return (
     <ScrollView style={styles.container}>
-      <View>
+      {/* <View>
         <FlatList
           data={sortedArray}
           renderItem={({ item: data, index }) => (
@@ -110,13 +124,13 @@ export default function App() {
           horizontal={true}
           style={styles.horizontalFlatList}
         />
-      </View>
+      </View> */}
 
       <View>
         <FlatList
-          data={rewardArray}
+          data={sortedArray}
           renderItem={({ item: data, index }) => (
-            <RenderVerticalFlatList data={data} index={index} />
+            <RenderVerticalFlatList data={data}  index={index} />
           )}
           numColumns={2}
           style={styles.verticalFlatList}
@@ -128,6 +142,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 30,
     height: windowHeight,
     backgroundColor: "#171717",
   },
