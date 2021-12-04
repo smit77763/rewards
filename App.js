@@ -10,12 +10,11 @@ import {
   Button,
   ScrollView,
 } from "react-native";
-import RenderFlatList from "./components/RenderFlatList";
+// import RenderFlatList from "./components/RenderFlatList";
 import RenderVerticalFlatList from "./components/RenderVerticalFlatlist";
-import UpcomingRewardsModal from './components/UpcomingRewardsModal'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
-
+import UpcomingRewardsModal from "./components/UpcomingRewardsModal";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -29,7 +28,9 @@ export default function App() {
   const [sortedArray, setSortedArray] = useState([]);
   const [rewardArray, setRewardArray] = useState([]);
   const [batchWiseBlock, setBatchWiseBlock] = useState();
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [runningBatchData, setRunningBatchData] = useState([]);
+  const [lengthOfBlock, setLengthOfBlock] = useState();
   let res;
 
   useEffect(() => {
@@ -62,6 +63,9 @@ export default function App() {
       );
 
       res = await response.json();
+
+      setLengthOfBlock(res.data.rewardList[0].count);
+
       setBatchesLength(res.data.rewardList[0].lenOfBatches);
       // No.of batches
       const lengthOfBacthes = res.data.rewardList[0].lenOfBatches;
@@ -89,6 +93,38 @@ export default function App() {
         });
       }
 
+      //data for ongoing / upcoming batches
+      let runningBatch = [];
+
+      for (let i = lengthOfBacthes; i < lengthOfBacthes + 1; i++) {
+        //no. of blocks in ith batches
+        let blockLength = res.data.rewardList[0].track[i].blockNumber.length;
+        //it referes to ith sorted block.
+        let sortBlockArray = res.data.rewardList[0].track[i].blockNumber;
+
+        for (let j = 0; j < blockLength; j++) {
+          runningBatch.push(blockArray[i].blocks[sortBlockArray[j]]);
+        }
+      }
+
+      let blockLength =
+        res.data.rewardList[0].track[lengthOfBacthes].blockNumber.length;
+      let findArray = res.data.rewardList[0].track[lengthOfBacthes].blockNumber;
+      const lastBatchArray = blockArray[lengthOfBacthes].blocks;
+
+      if (blockLength < 4) {
+        let leftBlocksIndex = 0;
+
+        while (leftBlocksIndex != 4) {
+          const isExist = findArray.indexOf(leftBlocksIndex);
+          if (isExist === -1)
+            runningBatch.push(lastBatchArray[leftBlocksIndex]);
+          leftBlocksIndex++;
+        }
+      }
+
+      setRunningBatchData(runningBatch);
+
       setRewardArray([...res.data.rewardList[0].rewardData]);
       //update the state
       setSortedArray(sortedSequenceArray);
@@ -106,17 +142,32 @@ export default function App() {
     <ScrollView style={styles.container}>
       <View>
         <View>
-          <TouchableOpacity style={styles.upcominRewardButton}
+          <TouchableOpacity
+            style={styles.upcominRewardButton}
             onPress={() => {
-              setIsModalVisible(true)
+              setIsModalVisible(true);
             }}
           >
-            <Text style={styles.upcominRewardButtonText}>Upcoming rewards on your path </Text>
-            <FontAwesomeIcon style={{ marginLeft: 20 }} icon={faArrowRight} size={20} color={'#52AFEE'} />
+            <Text style={styles.upcominRewardButtonText}>
+              Upcoming rewards on your path{" "}
+            </Text>
+            <View style={styles.blockStatus}>
+              <Text style={styles.blockStatusText}>{lengthOfBlock}/4</Text>
+            </View>
+            <FontAwesomeIcon
+              style={{ marginLeft: 20 }}
+              icon={faArrowRight}
+              size={20}
+              color={"#52AFEE"}
+            />
           </TouchableOpacity>
-          <UpcomingRewardsModal visible={isModalVisible} setVisible={(visible) => {
-            setIsModalVisible(visible)
-          }} />
+          <UpcomingRewardsModal
+            visible={isModalVisible}
+            setVisible={(visible) => {
+              setIsModalVisible(visible);
+            }}
+            runningBatchData={runningBatchData}
+          />
         </View>
 
         <FlatList
@@ -133,25 +184,38 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-
+  blockStatus: {
+    width: 26,
+    height: 26,
+    backgroundColor: "#52AFEE",
+    borderRadius: 13,
+    marginLeft: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  blockStatusText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "white",
+  },
   upcominRewardButton: {
     height: windowHeight * 0.05,
     // width: '100%',
     marginHorizontal: 20,
     elevation: 5,
     marginVertical: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 6,
     justifyContent: "center",
-    alignItems: 'center',
-    flexDirection: 'row'
+    alignItems: "center",
+    flexDirection: "row",
   },
   upcominRewardButtonText: {
     fontSize: 17,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   verticalFlatList: {
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
 
   container: {

@@ -123,7 +123,8 @@ const RenderVerticalFlatList = ({ data, index }) => {
                     <Text style={styles.modalTitle1}>Reward Earned </Text>
                     <Text style={styles.modalTitle2}>Congratulations</Text>
                     <Text style={styles.modalTitle3}>You Have Earned</Text>
-                    <Text style={styles.modalTitle4}>₹ {data.rewardDetails.rewardAmount}{" "}
+                    <Text style={styles.modalTitle4}>
+                      ₹ {data.rewardDetails.rewardAmount}{" "}
                     </Text>
                     {/* <Text style={styles.modalTitle3}> on {date} </Text> */}
                   </View>
@@ -176,10 +177,7 @@ const RenderVerticalFlatList = ({ data, index }) => {
 const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
-    // paddingLeft: 15,
-    // paddingRight: 15,
     borderRadius: 10.9,
-    // alignItems: "center"
   },
   leftRight: {
     flexDirection: "row",
@@ -212,22 +210,14 @@ const styles = StyleSheet.create({
   },
 
   info: {
-    marginTop: 65,
-    marginRight: 2.5,
-    alignItems: "center",
-    justifyContent: "center",
+    marginTop: 60,
+    marginRight: 3,
   },
 
   verticalFlatListView: {
     width: (windowWidth / 2) * 0.9,
     height: (windowWidth / 2) * 0.7,
-    // alignItems: "center",
-    // marginHorizontal: 15,
-    // justifyContent: "center",
-    // borderWidth: 2,
-    // borderRadius: 10.9,
     borderColor: "red",
-    // backgroundColor: "#EDEDED",
     marginHorizontal: 4.5,
     marginBottom: 10,
     borderRadius: 10.9,
@@ -236,36 +226,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
-  // centeredView: {
-  //   flex: 1,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   backgroundColor: "rgba(255, 255, 255, 0.5)",
-  // },
-  // modalView: {
-  //   borderRadius: 20,
-  //   padding: 35,
-  //   alignItems: "center",
-  //   shadowOffset: {
-  //     width: 0,
-  //     height: 0,
-  //   },
-  //   elevation: 1,
-  //   backgroundColor: "#101010",
-  // },
-  // modalText: {
-  //   marginBottom: 5,
-  //   textAlign: "center",
-  //   color: "white",
-  //   fontSize: 16,
-  //   fontWeight: "bold",
-  // },
-  // modalHide: {
-  //   flex: 1,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   width: "100%",
-  // },
 
   centeredView: {
     flex: 1,
@@ -316,7 +276,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontWeight: "bold",
     letterSpacing: 1.2,
-    paddingBottom:5
+    paddingBottom: 5,
   },
 
   bottom: {
