@@ -35,10 +35,10 @@ import Svg, {
 
 // import InfoIcon from "@mui/icons-material/Info";
 // import LinearGradient from "react-native-linear-gradient";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -49,7 +49,6 @@ const RenderVerticalFlatList = ({ data, index }) => {
   // console.log(" my data  is : ", data);
 
   return (
-
     <TouchableOpacity
       onPress={() => {
         setModalVisible(true);
@@ -57,7 +56,7 @@ const RenderVerticalFlatList = ({ data, index }) => {
     >
       <View style={styles.verticalFlatListView}>
         <LinearGradient
-          colors={['#52AFEE', '#3891CC']}
+          colors={["#52AFEE", "#3891CC"]}
           style={styles.linearGradient}
         >
           <View style={styles.leftRight}>
@@ -100,7 +99,11 @@ const RenderVerticalFlatList = ({ data, index }) => {
             {/* <View style={styles.info}>
               <Text>i</Text>
             </View> */}
-            <FontAwesomeIcon style={styles.info} icon={faInfoCircle} size={20} />
+            <FontAwesomeIcon
+              style={styles.info}
+              icon={faInfoCircle}
+              size={20}
+            />
             {/* <InfoIcon /> */}
           </View>
 
@@ -120,9 +123,7 @@ const RenderVerticalFlatList = ({ data, index }) => {
                     <Text style={styles.modalTitle1}>Reward Earned </Text>
                     <Text style={styles.modalTitle2}>Congratulations</Text>
                     <Text style={styles.modalTitle3}>You Have Earned</Text>
-                    <Text style={styles.modalTitle4}>
-                      {" "}
-                      ₹ {data.rewardDetails.rewardAmount}{" "}
+                    <Text style={styles.modalTitle4}>₹ {data.rewardDetails.rewardAmount}{" "}
                     </Text>
                     {/* <Text style={styles.modalTitle3}> on {date} </Text> */}
                   </View>
@@ -138,7 +139,7 @@ const RenderVerticalFlatList = ({ data, index }) => {
                       <View style={styles.line}></View>
                       <View
                         style={styles.circle}
-                      // { backgroundColor: "#FFAF7A" }
+                        // { backgroundColor: "#FFAF7A" }
                       >
                         <Text style={styles.leftText}>3</Text>
                       </View>
@@ -149,16 +150,16 @@ const RenderVerticalFlatList = ({ data, index }) => {
                     </View>
                     <View style={styles.rightside}>
                       <Text style={styles.rightText}>
-                        You Particiapted In {data.blocksDetails[0].category}
+                        You Participated In {data.blocksDetails[0].category}
                       </Text>
                       <Text style={styles.rightText}>
-                        You Particiapted In {data.blocksDetails[1].category}
+                        You Participated In {data.blocksDetails[1].category}
                       </Text>
                       <Text style={styles.rightText}>
-                        You Particiapted In {data.blocksDetails[2].category}
+                        You Participated In {data.blocksDetails[2].category}
                       </Text>
                       <Text style={styles.rightText}>
-                        You Particiapted In {data.blocksDetails[3].category}
+                        You Participated In {data.blocksDetails[3].category}
                       </Text>
                     </View>
                   </View>
@@ -169,12 +170,10 @@ const RenderVerticalFlatList = ({ data, index }) => {
         </LinearGradient>
       </View>
     </TouchableOpacity>
-
   );
 };
 
 const styles = StyleSheet.create({
-
   linearGradient: {
     flex: 1,
     // paddingLeft: 15,
@@ -195,12 +194,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   date: {
-    color: 'white',
+    color: "white",
     fontSize: 12,
   },
   rewardPrice: {
-    fontFamily: 'Arial',
-    color: 'white',
+    fontFamily: "Arial",
+    color: "white",
     fontSize: 48,
     paddingTop: 15,
   },
@@ -272,82 +271,52 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "black",
-    backgroundColor: " rgba(0,0,0,0.25)",
-
-    // opacity: 0.2,
+    backgroundColor: " rgba(0,0,0,0.7)",
   },
   modalView: {
-    // zIndex: 10,
-    // backgroundColor: "grey",
-    // backgroundColor: "white",
+    backgroundColor: "white",
     width: windowWidth * 0.9,
     borderRadius: 20,
-    // padding: 35,
-    // paddingTop: 10,
-    // paddingBottom: 30,
     paddingTop: 10,
     paddingBottom: 30,
     paddingHorizontal: 15,
     justifyContent: "center",
-    // shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 0,
     },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 4,
     elevation: 1,
-    // borderWidth: 2,
-    // flex: 1,
-    // flexDirection: "row",
     borderWidth: 1,
     borderColor: "#ff6600",
   },
   top: {
     marginHorizontal: 10,
-    // borderWidth:1
   },
   modalTitle1: {
     fontSize: 15,
-    // marginBottom:20,
-
     borderColor: "#ffaf7a",
-    // borderBottomWidth: 1,
     fontWeight: "bold",
     letterSpacing: 1.2,
-    // marginLeft: 25,
-    // marginRight: 25,
   },
   modalTitle2: {
     fontSize: 28,
-    // marginHorizontal: 10,
     borderColor: "#ffaf7a",
-    // borderBottomWidth: 1,
     fontWeight: "bold",
     letterSpacing: 1.2,
-    // marginLeft: 25,
-    // marginRight: 25,
   },
   modalTitle3: {
     fontSize: 18,
-    // marginHorizontal: 10,
     borderColor: "#ffaf7a",
-    // borderBottomWidth: 1,
     fontWeight: "bold",
     letterSpacing: 1.2,
-    // marginLeft: 25,
-    // marginRight: 25,
   },
   modalTitle4: {
-    fontSize: 28,
-    // marginHorizontal: 10,
+    fontSize: 30,
     borderColor: "#ffaf7a",
     borderBottomWidth: 1,
     fontWeight: "bold",
     letterSpacing: 1.2,
-    // marginLeft: 25,
-    // marginRight: 25,
+    paddingBottom:5
   },
 
   bottom: {
@@ -356,7 +325,6 @@ const styles = StyleSheet.create({
 
   leftside: {
     flex: 3,
-    // borderWidth: 1,
     paddingVertical: 15,
     justifyContent: "center",
     alignItems: "center",
@@ -365,30 +333,22 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 50,
-    // backgroundColor: "black",
     backgroundColor: "#FF6600",
     justifyContent: "center",
     alignItems: "center",
-
-    // marginVertical: 10,
   },
   line: {
     width: 4,
     height: 15,
-    // backgroundColor: "black",
-    // overflow: "hidden",
     backgroundColor: "#FF6600",
   },
   rightside: {
     flex: 7,
-    // borderWidth: 1,
     paddingVertical: 10,
     justifyContent: "space-around",
   },
   rightText: {
-    // marginBottom: 13,
     fontSize: 16,
-    // borderWidth: 1,
     color: "black",
   },
   leftText: {
