@@ -12,6 +12,10 @@ import {
 } from "react-native";
 import RenderFlatList from "./components/RenderFlatList";
 import RenderVerticalFlatList from "./components/RenderVerticalFlatlist";
+import UpcomingRewardsModal from './components/UpcomingRewardsModal'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -25,6 +29,7 @@ export default function App() {
   const [sortedArray, setSortedArray] = useState([]);
   const [rewardArray, setRewardArray] = useState([]);
   const [batchWiseBlock, setBatchWiseBlock] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false)
   let res;
 
   useEffect(() => {
@@ -100,6 +105,20 @@ export default function App() {
   return (
     <ScrollView style={styles.container}>
       <View>
+        <View>
+          <TouchableOpacity style={styles.upcominRewardButton}
+            onPress={() => {
+              setIsModalVisible(true)
+            }}
+          >
+            <Text style={styles.upcominRewardButtonText}>Upcoming rewards on your path </Text>
+            <FontAwesomeIcon style={{ marginLeft: 20 }} icon={faArrowRight} size={20} color={'#52AFEE'} />
+          </TouchableOpacity>
+          <UpcomingRewardsModal visible={isModalVisible} setVisible={(visible) => {
+            setIsModalVisible(visible)
+          }} />
+        </View>
+
         <FlatList
           data={sortedArray}
           renderItem={({ item: data, index }) => (
@@ -114,10 +133,31 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+
+  upcominRewardButton: {
+    height: windowHeight * 0.05,
+    // width: '100%',
+    marginHorizontal: 20,
+    elevation: 5,
+    marginVertical: 15,
+    backgroundColor: 'white',
+    borderRadius: 6,
+    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  upcominRewardButtonText: {
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  verticalFlatList: {
+    marginHorizontal: 10
+  },
+
   container: {
     marginTop: 30,
     height: windowHeight,
-    backgroundColor: "#171717",
+    backgroundColor: "white",
   },
   horizontalFlatList: {
     marginTop: 100,

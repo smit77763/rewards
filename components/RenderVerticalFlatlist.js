@@ -34,7 +34,11 @@ import Svg, {
 } from "react-native-svg";
 
 // import InfoIcon from "@mui/icons-material/Info";
-import LinearGradient from "react-native-linear-gradient";
+// import LinearGradient from "react-native-linear-gradient";
+import { LinearGradient } from 'expo-linear-gradient';
+
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -45,16 +49,17 @@ const RenderVerticalFlatList = ({ data, index }) => {
   // console.log(" my data  is : ", data);
 
   return (
-    <LinearGradient
-      colors={["#4c669f", "#3b5998", "#192f6a"]}
-      style={styles.linearGradient}
+
+    <TouchableOpacity
+      onPress={() => {
+        setModalVisible(true);
+      }}
     >
-      <TouchableOpacity
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <View style={styles.verticalFlatListView}>
+      <View style={styles.verticalFlatListView}>
+        <LinearGradient
+          colors={['#52AFEE', '#3891CC']}
+          style={styles.linearGradient}
+        >
           <View style={styles.leftRight}>
             <Text style={styles.date}>{date}</Text>
             <Svg
@@ -62,6 +67,7 @@ const RenderVerticalFlatList = ({ data, index }) => {
               width="21"
               height="21"
               viewBox="0 0 21 21"
+              style={{ marginBottom: 6 }}
             >
               <G id="Arrow-reward" transform="translate(-152 -149)">
                 <Circle
@@ -89,11 +95,12 @@ const RenderVerticalFlatList = ({ data, index }) => {
           <View style={styles.leftRight2}>
             <Text style={styles.rewardPrice}>
               {" "}
-              ₹.{data.rewardDetails.rewardAmount}{" "}
+              ₹ {data.rewardDetails.rewardAmount}{" "}
             </Text>
-            <View style={styles.info}>
+            {/* <View style={styles.info}>
               <Text>i</Text>
-            </View>
+            </View> */}
+            <FontAwesomeIcon style={styles.info} icon={faInfoCircle} size={20} />
             {/* <InfoIcon /> */}
           </View>
 
@@ -131,7 +138,7 @@ const RenderVerticalFlatList = ({ data, index }) => {
                       <View style={styles.line}></View>
                       <View
                         style={styles.circle}
-                        // { backgroundColor: "#FFAF7A" }
+                      // { backgroundColor: "#FFAF7A" }
                       >
                         <Text style={styles.leftText}>3</Text>
                       </View>
@@ -159,27 +166,42 @@ const RenderVerticalFlatList = ({ data, index }) => {
               </TouchableOpacity>
             </View>
           </Modal>
-        </View>
-      </TouchableOpacity>
-    </LinearGradient>
+        </LinearGradient>
+      </View>
+    </TouchableOpacity>
+
   );
 };
 
 const styles = StyleSheet.create({
+
+  linearGradient: {
+    flex: 1,
+    // paddingLeft: 15,
+    // paddingRight: 15,
+    borderRadius: 10.9,
+    // alignItems: "center"
+  },
   leftRight: {
     flexDirection: "row",
     paddingHorizontal: 2,
     marginTop: 2,
+    marginLeft: 4,
     borderBottomColor: "orange",
     borderBottomWidth: 1,
+    width: (windowWidth / 2) * 0.9 * 0.95,
     justifyContent: "space-between",
+    alignItems: "center",
     paddingTop: 10,
   },
   date: {
+    color: 'white',
     fontSize: 12,
   },
   rewardPrice: {
-    fontSize: 50,
+    fontFamily: 'Arial',
+    color: 'white',
+    fontSize: 48,
     paddingTop: 15,
   },
   leftRight2: {
@@ -191,12 +213,8 @@ const styles = StyleSheet.create({
   },
 
   info: {
-    width: 18,
-    height: 18,
-    borderWidth: 1,
-    marginTop: 50,
-    marginLeft: 10,
-    borderRadius: 50,
+    marginTop: 65,
+    marginRight: 2.5,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -205,14 +223,15 @@ const styles = StyleSheet.create({
     width: (windowWidth / 2) * 0.9,
     height: (windowWidth / 2) * 0.7,
     // alignItems: "center",
-    marginLeft: 15,
+    // marginHorizontal: 15,
     // justifyContent: "center",
-    borderWidth: 2,
+    // borderWidth: 2,
+    // borderRadius: 10.9,
     borderColor: "red",
-    backgroundColor: "#EDEDED",
-    marginHorizontal: 5,
+    // backgroundColor: "#EDEDED",
+    marginHorizontal: 4.5,
     marginBottom: 10,
-    borderRadius: 10,
+    borderRadius: 10.9,
   },
   verticalFlatListText: {
     fontWeight: "bold",
@@ -261,7 +280,7 @@ const styles = StyleSheet.create({
   modalView: {
     // zIndex: 10,
     // backgroundColor: "grey",
-    backgroundColor: "white",
+    // backgroundColor: "white",
     width: windowWidth * 0.9,
     borderRadius: 20,
     // padding: 35,
