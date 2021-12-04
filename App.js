@@ -44,7 +44,7 @@ export default function App() {
     let temp2 = [];
     for (let i = 0; i < batchesLength; i++) {
       const temp3 = [...batches[i]?.blocks];
-      
+
       temp2 = [...temp2, temp3];
     }
     setBatchWiseBlock(temp2);
@@ -64,11 +64,10 @@ export default function App() {
       const blockArray = res.data.rewardList[0].batches;
 
       // creating a new Array to store a element in the way that has been executed
-     let sortedSequenceArray = [];
+      let sortedSequenceArray = [];
 
-      for (let i = 0; i <lengthOfBacthes; i++) {
-        
-        let blockSequence=[];
+      for (let i = 0; i < lengthOfBacthes; i++) {
+        let blockSequence = [];
 
         //no. of blocks in ith batches
         let blockLength = res.data.rewardList[0].track[i].blockNumber.length;
@@ -78,23 +77,12 @@ export default function App() {
         for (let j = 0; j < blockLength; j++) {
           blockSequence.push(blockArray[i].blocks[sortBlockArray[j]]);
         }
-        sortedSequenceArray.push(blockSequence);
+        // sortedSequenceArray.push(blockSequence);
+        sortedSequenceArray.push({
+          rewardDetails: res.data.rewardList[0].rewardData[i],
+          blocksDetails: blockSequence,
+        });
       }
-
-      // let blockLength =
-      //   res.data.rewardList[0].track[lengthOfBacthes].blockNumber.length;
-      // let findArray = res.data.rewardList[0].track[lengthOfBacthes].blockNumber;
-      // const lastBatchArray = blockArray[lengthOfBacthes].blocks;
-
-      // if (blockLength < 4) {
-      //   let leftBlocksIndex = 0;
-
-      //   while (leftBlocksIndex != 4) {
-      //     const isExist = findArray.indexOf(leftBlocksIndex);
-      //     if (isExist === -1) sortedArray.push(lastBatchArray[leftBlocksIndex]);
-      //     leftBlocksIndex++;
-      //   }
-      // }
 
       setRewardArray([...res.data.rewardList[0].rewardData]);
       //update the state
@@ -111,26 +99,11 @@ export default function App() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <View>
-        <FlatList
-          data={sortedArray}
-          renderItem={({ item: data, index }) => (
-            <RenderFlatList
-              data={data}
-              index={index}
-              batchesLength={batchesLength}
-            />
-          )}
-          horizontal={true}
-          style={styles.horizontalFlatList}
-        />
-      </View> */}
-
       <View>
         <FlatList
           data={sortedArray}
           renderItem={({ item: data, index }) => (
-            <RenderVerticalFlatList data={data}  index={index} />
+            <RenderVerticalFlatList data={data} index={index} />
           )}
           numColumns={2}
           style={styles.verticalFlatList}
